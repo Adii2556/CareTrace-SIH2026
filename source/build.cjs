@@ -44,9 +44,19 @@ function timelineEvent(date, title, detail, glyph, status = '', actions = '', la
 }
 const sharedTimeline = () => `<div class="panel flush"><div class="panel-head"><h3>Authorized Medical Timeline</h3><span class="small muted">4 events</span></div>${[records[1], records[0], records[2], records[3]].map(r => `<div class="list-row">${box(r.icon, 'teal')}<div class="grow"><strong>${r.title === 'Consultation' ? 'Hypertension follow-up' : r.title === 'ECG' ? 'ECG completed' : r.title}</strong><p>${r.title === 'Current Prescription' ? r.detail : 'Shantipur Primary Health Centre'}</p></div><span class="small muted">${r.short} 2026</span></div>`).join('')}</div>`;
 const frames = [];
+const patientNavLinks = {
+  Dashboard: '02-patient-dashboard.html',
+  Timeline: '03-medical-timeline.html',
+  Records: '04-medical-records.html',
+  Care: '06-patient-consent.html',
+  Explain: '09-ai-record-explainer.html',
+};
 function save(slug, title, markup, width = 1440, height = 1000) {
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title} · CareTrace</title><link rel="stylesheet" href="../source/styles.css"></head><body data-screen="${slug}">${markup}</body></html>`;
-  fs.writeFileSync(path.join(pages, `${slug}.html`), html);
+  const linkedHtml = patientNavLinks && ['02-patient-dashboard', '03-medical-timeline', '04-medical-records', '06-patient-consent', '07-referral-tracking', '09-ai-record-explainer', '10-emergency-profile', '11-privacy-access'].includes(slug)
+    ? html.replace(/(<div class="nav-item [^"]*"><svg[\s\S]*?<\/svg>)(Dashboard|Timeline|Records|Care|Explain)/g, (_, prefix, label) => `${prefix}<a href="${patientNavLinks[label]}">${label}</a>`)
+    : html;
+  fs.writeFileSync(path.join(pages, `${slug}.html`), linkedHtml);
   frames.push({ slug, title, width, height });
 }
 

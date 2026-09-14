@@ -74,3 +74,4 @@ body[data-screen="09-ai-record-explainer"] .content>.mt16{margin-top:8px}
 .phone-header .avatar{min-width:44px;min-height:44px}
 .phone-screen-dashboard .panel.flush{margin-top:12px}
 .phone-screen-timeline .filters{margin-top:8px}
+.nav-item a{color:inherit}
